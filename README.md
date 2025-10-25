@@ -142,13 +142,22 @@
 1. ***Affiche les logs du service ssh sur les 24 dernières heures***
 
         sudo journalctl -u ssh --since "24 hours ago"
-    On utilise la commande `grep` pour rechercher toutes les occurrences du mot `sshd` (processus en charge des opérations SSH) dans le fichier log concerné.
+    On commence notre commande par `sudo` car accéder aux logs en question nécessite les privilèges d'administrateur. `journalctl` correspond à l'outil de consultation des logs du système. L'argument `-u ssh` filtre les entrées du service SSH uniquement, et l'argument `--since "24 hours ago"` filtre les occurrences des 24 dernières heures uniquement.
 
     ![Capture d'écran de l'étape 1](/Exercices/Intermédiaire03/Screen1.png)
 
 2. ***Filtre les logs pour avoir que les connexions ratées***
 
+        sudo journalctl -u ssh --since "24 hours ago" | grep -i "fail"
+    On réexécute la même commande mais en rajoutant `grep -i "fail"` (l'argument `-i` le rend insensible à la casse) derrière pour n'afficher que les lignes contenant le mot "fail".
 
+    ![Capture d'écran de l'étape 2](/Exercices/Intermédiaire03/Screen2.png)
 
 3. ***Sauvegarde tout dans un fichier sshd_failed_logins.txt***
 
+        sudo journalctl -u ssh --since "24 hours ago" | grep -i "fail" > sshd_failed_logins.txt
+    On réexécute à nouveau les mêmes commandes en rajoutant cette fois-ci `> sshd_failed_logins.txt` pour que la sortie de la commande soit directement transférée dans le fichier *sshd_failed_logins.txt* (en l'écrasant à chaque fois).
+
+    *En exécutant `ls` on remarque que le fichier s'est bien créé, et en exécutant `cat` sur celui-ci on voit que l'opération est bien réussie...*
+
+    ![Capture d'écran de l'étape 3](/Exercices/Intermédiaire03/Screen3.png)
