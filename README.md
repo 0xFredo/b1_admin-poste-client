@@ -161,3 +161,40 @@
     *En exécutant `ls` on remarque que le fichier s'est bien créé, et en exécutant `cat` sur celui-ci on voit que l'opération est bien réussie...*
 
     ![Capture d'écran de l'étape 3](/Exercices/Intermédiaire03/Screen3.png)
+
+### Exercice Avancé n°1
+
+1. ***Crée un nouvel utilisateur « étudiant » avec un répertoire personnel.***
+
+        sudo adduser etudiant
+    On commence par `sudo` pour s'octroyer les privilèges d'administrateur (nécessaires ici). On tape ensuite la commande `adduser` suivi du nom de l'utilisateur à créer, et on suit les instructions...
+
+    ![Capture d'écran de l'étape 1](/Exercices/Avancé01/Screen1.png)
+
+    *On exécute la commande `ls` sur `/home/` pour s'assurer que le répertoire personnel du nouvel utilisateur s'est bien créé aussi...*
+
+    ![2e capture d'écran de l'étape 1](/Exercices/Avancé01/Screen1-1.png)
+
+2. ***Crée le groupe « projet » et ajoute le nouvel utilisateur dans ce groupe***
+
+        sudo groupadd projet
+    Ici aussi on utilise `sudo` pour exécuter la commande correctement. On utilise la commande `groupadd` suivie du nom du groupe à créer...
+
+        sudo usermod -aG projet etudiant
+    Une fois de plus on utilise `sudo`, et on utilise la commande `usermod` pour ajouter l'utilisateur au groupe : l'argument `-aG` sert à cela. Il ne nous reste plus qu'à entrer le nom du groupe, puis celui de l'utilisateur à ajouter à celui-ci.
+
+    ![Capture d'écran de l'étape 2](/Exercices/Avancé01/Screen2.png)
+
+3. ***Change les permissions du dossier /home/etudiant pour que seul etudiant et les membres du groupe « projet » puisse y accéder***
+
+        sudo chown etudiant:projet /home/etudiant
+    La commande `chown` (invoquée en tant qu'admin pour être exécutée correctement) définit `etudiant` comme propriétaire du dossier `/home/etudiant` et `projet` comme groupe associé au dossier...
+
+        sudo chmod 770 /home/etudiant
+    Cette dernière commande, `chmod` (toujours précédée de `sudo`), définit les permissions du dossier `/home/etudiant`.
+    
+    Pour rappel, `770` correspond aux permissions à attribuer, le premier chiffre donne les permissions de l'utilisateur `etudiant`, le deuxième chiffre pour celles du groupe `projet`, et le troisième pour les autres. Le chiffre `7` correspond à l'accès en lecture/écriture tandis que `0` correspond à aucun accès.
+
+    Enfin on utilise `ls` pour s'assurer que nos permissions ont bien été définies : le morceau de ligne `rwxrwx---` nous montre que l'opération est réussie. `ls` rappelle également que le dossier est bien lié à l'utilisateur `etudiant` et au groupe `projet`.
+
+    ![Capture d'écran de l'étape 3](/Exercices/Avancé01/Screen3.png)
