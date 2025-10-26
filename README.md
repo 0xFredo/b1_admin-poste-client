@@ -112,8 +112,8 @@
         nano ~/backup.sh
     On commence par ouvrir dans l'éditeur de texte un nouveau fichier script (`.sh`) dans le dossier de départ de l'utilisateur (avec la commande `nano`). Le fichier sera créé à l'enregistrement.
 
-    ![Capture d'écran de l'étape 1](/Exercices/Intermédiaire02/Screen1.png)
     Ensuite on inscrit ensuite les commandes suivantes dans le script.
+    ![Capture d'écran de l'étape 1](/Exercices/Intermédiaire02/Screen1.png)
 
         chmod +x ~/backup.sh
         bash ~/backup.sh
@@ -162,6 +162,9 @@
 
     ![Capture d'écran de l'étape 3](/Exercices/Intermédiaire03/Screen3.png)
 
+---
+---
+
 ### Exercice Avancé n°1
 
 1. ***Crée un nouvel utilisateur « étudiant » avec un répertoire personnel.***
@@ -198,3 +201,40 @@
     Enfin on utilise `ls` pour s'assurer que nos permissions ont bien été définies : le morceau de ligne `rwxrwx---` nous montre que l'opération est réussie. `ls` rappelle également que le dossier est bien lié à l'utilisateur `etudiant` et au groupe `projet`.
 
     ![Capture d'écran de l'étape 3](/Exercices/Avancé01/Screen3.png)
+
+---
+
+### Exercice Avancé n°2
+
+1. ***Désactive un service inutile « cups » par exemple***
+
+        sudo systemctl disable cups
+    `systemctl` (qui requiert dans ce cas les privilèges d'admin donc on utilise `sudo`) est la commande qui gère les services : on l'utilise ici pour désactiver ***cups*** en tapant `disable` puis le nom du service à désactiver (donc `cups`).
+    *(On utlise la même commande avec ***cups.socket*** et ***cups.path*** pour complètement désactiver le service...)*
+
+        systemctl is-enabled cups
+    On réutilise `systemctl` (avec cette fois-ci l'option `is-enabled`) pour vérifier si le service a bien été désactivé : la commande nous retourne `disabled` ce qui signifie que l'opération a bien abouti.
+
+    ![Capture d'écran de l'étape 1](/Exercices/Avancé02/Screen1.png)
+
+2. ***Vérifie l’état du service SSH***
+
+        sudo systemctl status ssh
+    On utilise à nouveau `systemctl` (ici aussi en tant qu'admin) pour vérifier l'état du service ***ssh*** grâce à l'option `status`...
+    ![Capture d'écran de l'étape 2](/Exercices/Avancé02/Screen2.png)
+
+3. ***Créer un nouveau service qui lance un script bash au démarrage***
+
+    *On réutilisera ici le scipt `backup.sh` créé lors de l'Exercice Intermédiaire 02... Pour rappel celui-ci est déjà exécutable.*
+
+        sudo nano /etc/systemd/system/backupDoc.service
+    On utilise la commande `nano` pour créer un nouveau fichier service dans le dossier des services `/etc/systemd/system/`. Pour cela on utilise `sudo` car le dossier des services est protégé par le système.
+
+    Ensuite on inscrit ensuite le contenu suivant dans notre nouveau service (cela revient à configurer les actions de celui-ci, en l'occurrence lancer le script bash (sous le bloc Service)).
+    ![Capture d'écran de l'étape 3](/Exercices/Avancé02/Screen3.png)
+
+        sudo systemctl enable backupDoc.service
+        systemctl is-enabled backupDoc.service
+    Une dernière fois, on utilise `systemctl` (toujours en mode admin) pour activer (`enable`) le service (pour qu'il se lance au démarrage), et pour vérifier qu'il a bien été activé : la commande nous retourne `enabled` ce qui signifie que c'est bon !
+
+    ![2e capture d'écran de l'étape 3](/Exercices/Avancé02/Screen3-1.png)
