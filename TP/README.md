@@ -84,7 +84,35 @@ Les règles du pare-feu sont donc bien efficaces...
 
 ***a. Configurer votre vm pour accepter que les connexions via clefs ssh***
 
+**Sur la machine client :**
 
+Les deux prochaines étapes consistent en créer et copier la clé SSH qui nous permettra de nous connecter au serveur SSH, même après avoir désactivé l'authentification par mot de passe...
+
+    ssh-keygen
+On utilise cette commande pour générer une paire clés SSH (une publique et une privée, protégées par un mot de passe) pour le client SSH.
+
+    ssh-copy-id utilisateur@ip_du_serveur
+On utilise cette commande pour copier la clé publique sur le serveur SSH.
+
+![Screen7](/TP/TP1/Screen7.png)
+
+**Sur le serveur SSH :**
+
+    sudo nano /etc/ssh/sshd_config
+On utilise `nano` pour modifier la configuration du serveur SSH de notre VM. Le fichier de configuration étant dans `/etc/ssh/`, il nous faut les permissions d'administrateur donc on utilise une fois de plus `sudo`. On modifie le fichier de configuration comme suivant :
+
+        PasswordAuthentication no
+        PubkeyAuthentication yes
+        ChallengeResponseAuthentication no
+et on enregistre.
+
+    sudo systemctl restart ssh
+On utilise `systemctl` (toujours en admin) pour redémarrer le service SSH et ainsi appliquer les changements de configuration.
 
 ***b. Désactiver le login de l’utilisateur root sur ssh***
 
+    sudo nano /etc/ssh/sshd_config
+On retourne modifier la configuration du serveur SSH. On cherche la ligne `PermitRootLogin` et on change simplement la suite en `no`.
+
+    sudo systemctl restart ssh
+Ici aussi on redémarre SSH pour appliquer les changements de config...
