@@ -116,3 +116,58 @@ On retourne modifier la configuration du serveur SSH. On cherche la ligne `Permi
 
     sudo systemctl restart ssh
 Ici aussi on redémarre SSH pour appliquer les changements de config...
+
+## TP 2
+
+### 1. Préparation et configuration du webhook
+
+***Créer un webhook sur un serveur Discord dédié aux alertes de sécurité. Récupérer l’URL du webhook pour l’utiliser dans les scripts d’alerte.***
+
+    https://discord.com/api/webhooks/1432832794622427157/SsUhEnhBIJI9Mb5b1pWZFjjpZgkIhxW8UvMdRIwfxtv-sMqr9Ll2kX75eKkiYRLqyjZn
+
+### 2. Surveillance des accès à des fichiers sensibles
+
+***a. Identifier un fichier sensible (par exemple : `/etc/secret.txt`).***
+
+
+
+***b. Configurer un mécanisme de surveillance pour détecter tout accès en lecture à ce fichier.***
+
+
+
+***c. Utiliser `inotify` pour surveiller le fichier et déclencher un script Bash lorsqu’un accès est détecté.***
+
+
+
+***d. Le script enverra une alerte Discord via le webhook.***
+
+
+
+### 3. Surveillance des connexions SSH hors des horaires de bureau
+
+***a. Les horaires de bureau sont définis entre 9h00 et 18h00.***
+
+
+
+***b. Surveiller les connexions SSH en dehors de ces horaires en analysant les logs du service SSH.***
+
+
+
+***c. Configurer un script qui analyse le fichier de log `/var/log/auth.log` ou utilise `journalctl` pour repérer les connexions hors de cette plage horaire.***
+
+
+
+***d. Si une connexion est détectée en dehors des heures de bureau, envoyer une alerte Discord via le webhook.***
+
+
+
+### 4. Automatisation avec cron pour une surveillance continue
+
+***Configurer cron pour exécuter régulièrement les scripts :***
+
+***a. Le script de surveillance d'accès au fichier doit tourner en arrière-plan en continu.***
+
+
+
+***b. Le script de surveillance des connexions SSH doit être exécuté toutes les 5 minutes.***
+
