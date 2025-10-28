@@ -30,9 +30,7 @@ Dans notre système, on ouvre le navigateur de notre choix et on tape `localhost
 ***d. Modifier la configuration pour que le serveur réponde sur un port non standard (ex: 8080).***
 
     sudo nano /etc/apache2/ports.conf
-On utilise ici aussi l'outil `nano` (toujours en mode admin car dossier protégé) pour modifier la directive Listen (celle qui indique au serveur quels ports écouter) et y ajouter le port 8080.
-
-(On ajoute la ligne `Listen 8080` ce qui dit à Apache d’écouter sur le port 8080 en plus du port 80.)
+On utilise ici aussi l'outil `nano` (toujours en mode admin car dossier protégé) pour modifier la directive Listen (celle qui indique au serveur quels ports écouter) : on ajoute la ligne `Listen 8080` ce qui dit à Apache d’écouter sur le port 8080 en plus du port 80.
 
 ![Screen4](/TP/TP1/Screen4.png)
 
@@ -52,15 +50,35 @@ En ouvrant `localhost:8080/` dans le navigateur (et non `localhost` tout simplem
 
 ***a. Configurer un pare-feu pour n’autoriser que les connexions sur le port du serveur web (ex : 8080) et SSH (port 22).***
 
+    sudo ufw default deny incoming
+On configure UFW (en tant qu'administrateur) pour refuser toutes les connexions entrantes par défaut (à l'exception des connexion autorisées / liste blanche).
 
+    sudo ufw allow 22/tcp
+    sudo ufw allow 8080/tcp 
+On ajoute les ports 22 (SSH) et 8080 (localhost) à la liste blanche (à l'aide de l'option `allow`).
 
-***b. Bloquer toutes les autres connexions entrantes.***
+    sudo ufw enable
+On active le pare-feu pour que sa configuration prenne effet (avec l'optien `enable`): il n'autorise plus que les connexions sur les ports 8080 et 22.
 
+    sudo ufw status verbose
+On vérifie le statut du pare-feu pour vérifier qu'il a bel et bien été activé (avec l'argument `verbose` pour avoir des détails en plus sur la configuration).
 
+![Screen5](/TP/TP1/Screen5.png)
 
-***c. Tester les règles en essayant de se connecter via d’autres ports.***
+***b. Tester les règles en essayant de se connecter via d’autres ports.***
 
+    nc -vz 10.37.129.4 80
+En exécutant `nc` (`netcat`) vers notre système en utilisant le port 80 on remarque que la connexion n'aboutit pas...
 
+![Screen6](/TP/TP1/Screen6.png)
+
+    nc -vz 10.37.129.4 8080
+    nc -vz 10.37.129.4 22
+Cependant, après avoir exécuté la même commande en utilisant les ports 8080 puis 22, on remarque que les deux connexions ont abouti.
+
+Les règles du pare-feu sont donc bien efficaces...
+
+![Screen6bis](/TP/TP1/Screen6bis.png)
 
 ### 3. Sécurisation des connexions SSH
 
