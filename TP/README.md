@@ -125,23 +125,49 @@ Ici aussi on redémarre SSH pour appliquer les changements de config...
 
     https://discord.com/api/webhooks/1432832794622427157/SsUhEnhBIJI9Mb5b1pWZFjjpZgkIhxW8UvMdRIwfxtv-sMqr9Ll2kX75eKkiYRLqyjZn
 
+*L'URL du webhook. Il s'appelle Adrien.*
+
+    curl -H "Content-Type: application/json" \
+        -X POST \
+        -d "{\"content\": \"Test d'alerte Discord\"}" \
+        "https://discord.com/api/webhooks/1432832794622427157/SsUhEnhBIJI9Mb5b1pWZFjjpZgkIhxW8UvMdRIwfxtv-sMqr9Ll2kX75eKkiYRLqyjZn"
+
+On teste le webhook pour être sûr que tout fonctionne. Adrien doit dire "Test d'alerte Discord".
+
+![Capture d'écran du webhook qui fonctionne](/TP/TP2/Screen1.png)
+
 ### 2. Surveillance des accès à des fichiers sensibles
 
-***a. Identifier un fichier sensible (par exemple : `/etc/secret.txt`).***
+***Identifier un fichier sensible (par exemple : `/etc/secret.txt`). Configurer un mécanisme de surveillance pour détecter tout accès en lecture à ce fichier. Utiliser `inotify` pour surveiller le fichier et déclencher un script Bash lorsqu’un accès est détecté. Le script enverra une alerte Discord via le webhook.***
 
+    sudo apt update
+    sudo apt install inotify-tools
+En tant qu'administrateur, on commence par utiliser `apt` (le gestionnaire de paquets) pour actualiser le catalogue de paquets (`update`) avant d'installer (`install`) `inotify-tools` qui nous sera utile pour le TP.
 
+    nano TP2.sh
+On utilise `nano` pour éditer un nouveau fichier `TP2.sh` : il s'agit de notre script.
 
-***b. Configurer un mécanisme de surveillance pour détecter tout accès en lecture à ce fichier.***
+![Capture d'écran du script](/TP/TP2/Screen2.png)
 
+    chmod +x TP2.sh
+On rend notre script exécutable.
 
+    sudo nano /etc/systemd/system/TP2.service
+En tant qu'admin, on utilise `nano` pour créer un nouveau fichier service dans le dossier des services. Ce service est en charge d'exécuter notre script au lancement du système pour que la surveillance de notre fichier secret soit permanente.
 
-***c. Utiliser `inotify` pour surveiller le fichier et déclencher un script Bash lorsqu’un accès est détecté.***
+![Capture d'écran du service](/TP/TP2/Screen3.png)
 
+    sudo systemctl enable TP2.service
+    sudo systemctl start TP2.service
+On utilise `systemctl` (toujours en mode admin) pour activer (`enable`) et démarrer (`start`) le service (pour qu'il se lance au démarrage).
 
+    cat /etc/secret.txt
+On accède au fichier pour vérifier que tout fonctionne bien.
 
-***d. Le script enverra une alerte Discord via le webhook.***
+![Capture d'écran de la surveillance OK](/TP/TP2/Screen4.png)
+![Capture d'écran de la surveillance OK](/TP/TP2/Screen4bis.png)
 
-
+*La notification apparait immédiatement à chaque fois...*
 
 ### 3. Surveillance des connexions SSH hors des horaires de bureau
 
