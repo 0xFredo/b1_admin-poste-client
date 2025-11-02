@@ -124,14 +124,14 @@
 2. ***Exécute ce script tous les jours à 2h***
 
         crontab -e
-    On modifie la crontab (le planificateur de tâches) de notre utilisateur, en y ajoutant ceci : `0 2 * * * /home/user/backup.sh`.
+    On modifie la crontab (le planificateur de tâches) de notre utilisateur, en y ajoutant ceci : `0 2 * * * /home/parallels/backup.sh`.
     
     Ici on indique l'heure d'exécution du scipt (tous les jours, 2h), et on spécifie le fichier.
 
         crontab -l
     On vérifie ici que la tâche est bien enregistrée.
 
-    ![Capture d'écran de l'étape 2](/Exercices/Intermédiaire02/Screen2.png)
+    ![Capture d'écran de l'étape 2](/Exercices/Intermédiaire02/Screen2rect.png)
 
     Nous avons maintenant un script bash qui sauvegardera tous les jours à 2h le contenu du dossier Documents dans le dossier Backups.
 
