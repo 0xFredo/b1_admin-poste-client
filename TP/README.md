@@ -190,7 +190,21 @@ Il y a eu une connexion SSH à 18h34 depuis l'hôte. Si le script fonctionne bie
 
 ***a. Le script de surveillance d'accès au fichier doit tourner en arrière-plan en continu.***
 
+*Si nous n'avions pas utilisé un service pour cette tâche, nous aurions procédé comme il suit :*
 
+    crontab -e
+On va éditer le fichier crontab (le planificateur de tâches) de la même manière qu'avec `nano`, et ajouter la ligne suivante à la fin du fichier qui s'ouvre : `@reboot /home/parallels/TP2.sh`
+
+Ici `@reboot` correspond à l'exécution d'une tâche au démarrage d'un système, un peu à la manière d'un service... et on indique évidemment le chemin du script à exécuter.
 
 ***b. Le script de surveillance des connexions SSH doit être exécuté toutes les 5 minutes.***
 
+    crontab -e
+On édite à nouveau la crontab pour y ajouter cette fois notre surveillance SSH... : `*/5 * * * * /home/parallels/TP2bis.sh`
+
+Ici on indique la récurrence d'exécution du scipt (toutes les 5 min, plus précisément à chaque minute divisible par 5), et on spécifie le fichier.
+
+    crontab -l
+On vérifie que notre tâche (pour SSH uniquement, comme on a déjà un service pour la surveillance de notre fichier secret...) a bien été enregistrée : on voit en effet notre nouvelle tâche en bas de page...
+
+![Capture de la crontab modifiée](/TP/TP2/Screen7.png)
