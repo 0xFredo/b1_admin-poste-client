@@ -164,28 +164,25 @@ On utilise `systemctl` (toujours en mode admin) pour activer (`enable`) et déma
     cat /etc/secret.txt
 On accède au fichier pour vérifier que tout fonctionne bien.
 
-![Capture d'écran de la surveillance OK](/TP/TP2/Screen4.png)
-![Capture d'écran de la surveillance OK](/TP/TP2/Screen4bis.png)
+![Capture d'écran de la surveillance OK (déclenchement du script par accès au fichier)](/TP/TP2/Screen4.png)
+![Capture d'écran de la surveillance OK (Discord)](/TP/TP2/Screen4bis.png)
 
 *La notification apparait immédiatement à chaque fois...*
 
 ### 3. Surveillance des connexions SSH hors des horaires de bureau
 
-***a. Les horaires de bureau sont définis entre 9h00 et 18h00.***
+***Les horaires de bureau sont définis entre 9h00 et 18h00. Surveiller les connexions SSH en dehors de ces horaires en analysant les logs du service SSH : configurer un script qui analyse le fichier de log `/var/log/auth.log` ou utilise `journalctl` pour repérer les connexions hors de cette plage horaire. Si une connexion est détectée en dehors des heures de bureau, envoyer une alerte Discord via le webhook.***
 
+    nano TP2bis.sh
+    chmod +x TP2bis.sh
+On crée notre script et on le rend exécutable.
 
+![Capture d'écran du 2e script](/TP/TP2/Screen5.png)
 
-***b. Surveiller les connexions SSH en dehors de ces horaires en analysant les logs du service SSH.***
+    bash TP2bis.sh
+Il y a eu une connexion SSH à 18h34 depuis l'hôte. Si le script fonctionne bien on aura un nouveau message dans notre Discord.
 
-
-
-***c. Configurer un script qui analyse le fichier de log `/var/log/auth.log` ou utilise `journalctl` pour repérer les connexions hors de cette plage horaire.***
-
-
-
-***d. Si une connexion est détectée en dehors des heures de bureau, envoyer une alerte Discord via le webhook.***
-
-
+![Capture d'écran de la surveillance OK](/TP/TP2/Screen6.png)
 
 ### 4. Automatisation avec cron pour une surveillance continue
 
