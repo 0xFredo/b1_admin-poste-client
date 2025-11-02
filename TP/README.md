@@ -150,7 +150,7 @@ On utilise `nano` pour éditer un nouveau fichier `TP2.sh` : il s'agit de notre 
 ![Capture d'écran du script](/TP/TP2/Screen2.png)
 
     chmod +x TP2.sh
-On rend notre script exécutable.
+On rend notre script exécutable (`chmod` permet d'éditer les permissions, `+x` permet donc pour rappel de rendre un fichier **exécutable**).
 
     sudo nano /etc/systemd/system/TP2.service
 En tant qu'admin, on utilise `nano` pour créer un nouveau fichier service dans le dossier des services. Ce service est en charge d'exécuter notre script au lancement du système pour que la surveillance de notre fichier secret soit permanente.
@@ -162,7 +162,7 @@ En tant qu'admin, on utilise `nano` pour créer un nouveau fichier service dans 
 On utilise `systemctl` (toujours en mode admin) pour activer (`enable`) et démarrer (`start`) le service (pour qu'il se lance au démarrage).
 
     cat /etc/secret.txt
-On accède au fichier pour vérifier que tout fonctionne bien.
+On accède au fichier (plus précisément on affiche directement son contenu, avec `cat`) pour vérifier que tout fonctionne bien.
 
 ![Capture d'écran de la surveillance OK (déclenchement du script par accès au fichier)](/TP/TP2/Screen4.png)
 ![Capture d'écran de la surveillance OK (Discord)](/TP/TP2/Screen4bis.png)
@@ -175,11 +175,13 @@ On accède au fichier pour vérifier que tout fonctionne bien.
 
     nano TP2bis.sh
     chmod +x TP2bis.sh
-On crée notre script et on le rend exécutable.
+On crée notre script (`nano`) et on le rend exécutable (`chmod +x`).
 
 ![Capture d'écran du 2e script](/TP/TP2/Screen5.png)
 
     bash TP2bis.sh
+On exécute directement notre script pour le tester.
+
 Il y a eu une connexion SSH à 18h34 depuis l'hôte. Si le script fonctionne bien on aura un nouveau message dans notre Discord.
 
 ![Capture d'écran de la surveillance OK](/TP/TP2/Screen6.png)
@@ -193,7 +195,7 @@ Il y a eu une connexion SSH à 18h34 depuis l'hôte. Si le script fonctionne bie
 *Si nous n'avions pas utilisé un service pour cette tâche, nous aurions procédé comme il suit :*
 
     crontab -e
-On va éditer le fichier crontab (le planificateur de tâches) de la même manière qu'avec `nano`, et ajouter la ligne suivante à la fin du fichier qui s'ouvre : `@reboot /home/parallels/TP2.sh`
+On va éditer (`-e`) le fichier crontab (le planificateur de tâches) de la même manière qu'avec `nano`, et ajouter la ligne suivante à la fin du fichier qui s'ouvre : `@reboot /home/parallels/TP2.sh`
 
 Ici `@reboot` correspond à l'exécution d'une tâche au démarrage d'un système, un peu à la manière d'un service... et on indique évidemment le chemin du script à exécuter.
 
@@ -205,6 +207,6 @@ On édite à nouveau la crontab pour y ajouter cette fois notre surveillance SSH
 Ici on indique la récurrence d'exécution du scipt (toutes les 5 min, plus précisément à chaque minute divisible par 5), et on spécifie le fichier.
 
     crontab -l
-On vérifie que notre tâche (pour SSH uniquement, comme on a déjà un service pour la surveillance de notre fichier secret...) a bien été enregistrée : on voit en effet notre nouvelle tâche en bas de page...
+On liste (`-l`) la crontab pour vérifier que notre tâche (pour SSH uniquement, comme on a déjà un service pour la surveillance de notre fichier secret...) a bien été enregistrée : on voit en effet notre nouvelle tâche en bas de page...
 
 ![Capture de la crontab modifiée](/TP/TP2/Screen7.png)
